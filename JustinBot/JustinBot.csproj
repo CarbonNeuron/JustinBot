@@ -21,11 +21,15 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Lavalink4NET" Version="1.6.1" />
+      <PackageReference Include="Lavalink4NET.DSharpPlus" Version="1.6.1" />
       <PackageReference Include="NLog" Version="4.7.5" />
     </ItemGroup>
 
     <ItemGroup>
       <None Update="nlog.config">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Settings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
