@@ -5,7 +5,7 @@ namespace JustinBot
     public static class Settings
     {
         public static PSettings PersistentSettings =
-            new ConfigurationBuilder<PSettings>().UseEnvironmentVariables().UseJsonFile("settings.json").Build();
+            new ConfigurationBuilder<PSettings>().UseEnvironmentVariables().Build();
     }
 
     public interface PSettings
@@ -15,6 +15,9 @@ namespace JustinBot
         
         [Option(Alias = "Polly.SecretKey")]
         public string AWSAccessKeyID { get; set; }
+        
+        [Option(Alias = "VoicePath")]
+        public string VoicePath { get; set; }
         
         [Option(Alias = "BotToken")]
         public string BotToken { get; set; }

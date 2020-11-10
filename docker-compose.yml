@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  justin:
+    build: .
+    volumes:
+      - voice:/etc/voice/
+    environment:
+      - BotToken=botT
+      - LavaLink=lava:2333
+      - LavalinkPassword=bow wow wow yibby yo yibby yay
+      - Polly.AccessKey=PollyKey
+      - Polly.SecretKey=PollyKey2
+      - VoicePath=/etc/voice/
+    links:
+      - lavalink:lava
+    depends_on:
+      - lavalink
+
+  lavalink:
+    image: "fredboat/lavalink:master"
+    expose:
+      - 2333
+    volumes:
+      - type: bind
+        source: ./lavalink/application.yml
+        target: /opt/Lavalink/application.yml
+      - voice:/etc/voice/
+      
+volumes:
+  voice: 

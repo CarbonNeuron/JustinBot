@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Amazon.Polly;
 using Amazon.Polly.Model;
 using Castle.Core.Internal;
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using Lavalink4NET.Player;
@@ -13,12 +15,22 @@ namespace JustinBot
 {
     public class Commands : BaseCommandModule
     {
+        [Command("leave")]
+        [RequireRolesAttribute(RoleCheckMode.Any, new[] {"Justin Access"})]
+        public async Task leave(CommandContext ctx, [RemainingText] string textToSpeak)
+        {
+            var player = Program.audioService.GetPlayer<QueuedLavalinkPlayer>(ctx.Guild.Id) 
+                         ?? await Program.audioService.JoinAsync<QueuedLavalinkPlayer>(ctx.Guild.Id,ctx.Member.VoiceState.Channel.Id);
+            await player.DisconnectAsync();
+            await player.DestroyAsync();
+        }
+
         [Command("speak")]
         [RequireRolesAttribute(RoleCheckMode.Any, new []{"Justin Access"})]
         public async Task speak(CommandContext ctx, [RemainingText] string textToSpeak)
         {
-            var player = Program.audioService.GetPlayer<LavalinkPlayer>(ctx.Guild.Id) 
-                         ?? await Program.audioService.JoinAsync<LavalinkPlayer>(ctx.Guild.Id,ctx.Member.VoiceState.Channel.Id);
+            var player = Program.audioService.GetPlayer<QueuedLavalinkPlayer>(ctx.Guild.Id) 
+                         ?? await Program.audioService.JoinAsync<QueuedLavalinkPlayer>(ctx.Guild.Id,ctx.Member.VoiceState.Channel.Id);
 
             var ActualVoice = VoiceId.Justin;
             foreach (var user in ctx.Message.MentionedUsers)
@@ -40,7 +52,7 @@ namespace JustinBot
             });
                 
             var g = Guid.NewGuid();
-            string path = $@"C:\temp\{g}.Mp3";
+            string path = $@"{Settings.PersistentSettings.VoicePath}{g}.Mp3";
             FileStream f = new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite);
             await SpeechResponse.AudioStream.CopyToAsync(f);
             f.Flush();

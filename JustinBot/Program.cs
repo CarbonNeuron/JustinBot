@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.Polly;
+using Amazon.Runtime;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using Lavalink4NET;
 using Lavalink4NET.DSharpPlus;
+using Lavalink4NET.Rest;
 using Lavalink4NET.Tracking;
 using NLog;
 
@@ -15,8 +18,8 @@ namespace JustinBot
 {
     class Program
     {
-        public static AmazonPollyClient Polly = new AmazonPollyClient(Settings.PersistentSettings.AWSAccessKeyID,
-            Settings.PersistentSettings.AWSAccessKey, RegionEndpoint.USEast1);
+        public static AmazonPollyClient Polly = new AmazonPollyClient(new BasicAWSCredentials(Settings.PersistentSettings.AWSAccessKey, Settings.PersistentSettings.AWSAccessKeyID), RegionEndpoint.USEast1);
+
         public static DiscordClient discord;
         public static LavalinkNode audioService;
         private static Logger _logger = LogManager.GetCurrentClassLogger();
@@ -53,8 +56,12 @@ namespace JustinBot
             service.RemoveTracker(DefaultInactivityTrackers.ChannelInactivityTracker);
             service.BeginTracking();
             discord.Ready += DiscordOnReady;
-            commands.RegisterCommands(Assembly.GetExecutingAssembly());
+            commands.RegisterCommands<Commands>();
             await discord.ConnectAsync();
+            Thread.Sleep(5000);
+            await audioService.InitializeAsync();
+                //var connections = await discord.GetConnectionsAsync();
+            
             await Task.Delay(-1); //Run forever
         }
 
