@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Threading.Tasks;
+using NLog;
 
 namespace JustinBot
 {
     class Program
     {
-        static void Main(string[] args)
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            _logger.Debug("I'm alive!");
         }
     }
 }

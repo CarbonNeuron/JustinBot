@@ -5,4 +5,29 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AWSSDK.Polly" Version="3.5.0.36" />
+      <PackageReference Include="Config.Net" Version="4.15.0" />
+      <PackageReference Include="Config.Net.Json" Version="4.15.0" />
+      <PackageReference Include="Costura.Fody" Version="5.0.0-alpha0281">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00748" />
+      <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00748" />
+      <PackageReference Include="DSharpPlus.VoiceNext" Version="4.0.0-nightly-00748" />
+      <PackageReference Include="Fody" Version="6.3.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Lavalink4NET" Version="1.6.1" />
+      <PackageReference Include="NLog" Version="4.7.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="nlog.config">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
